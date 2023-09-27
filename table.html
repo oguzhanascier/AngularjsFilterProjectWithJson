@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"
+      integrity="sha512-KZmyTq3PLx9EZl0RHShHQuXtrvdJ+m35tuOiwlcZfs/rE7NZv29ygNA8SFCkMXTnYZQK2OX0Gm2qKGfvWEtRXA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.sanitize.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.route.js"></script>
+    <title>Document</title>
+    <style>
+      table,
+      tr,
+      td,
+      th {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 20px 10px;
+        min-width: 300px;
+        text-align: center;
+      }
+      th{
+        cursor: pointer;
+      }
+      input{
+        width: 1275px;
+        padding: 5px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        border: 1px solid saddlebrown;
+      }
+    </style>
+  </head>
+
+  <body ng-controller="tableProject" ng-app="myApp">
+    <input type="text" ng-model="search">
+    <div>{{sort}}</div>
+    <table>
+      <thead>
+        <tr>
+            <th ng-click="sortBy('$index')">##</th>
+
+          <th ng-click="sortBy('phone')">Phone</th>
+          <th ng-click="sortBy('name')">Name</th>
+          <th ng-click="sortBy('email')">Mail</th>
+        </tr>
+      </thead>
+      <tbody ng-repeat="item in people | orderBy: sort | filter: search">
+        <tr>
+          <td>{{$index + 1}}</td>
+          <td>{{item.phone}}</td>
+          <td>{{item.name}}</td>
+          <td>{{item.email}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <script>
+      var app = angular.module("myApp", []);
+      app.controller("tableProject", function ($scope, $http) {
+        $http.get("table.json").then(function (res) {
+          $scope.people = res.data.user;
+        });
+        $scope.sortBy = function (param){
+            $scope.sort= param
+        }
+        $scope.search=""
+      });
+    </script>
+  </body>
+</html>
